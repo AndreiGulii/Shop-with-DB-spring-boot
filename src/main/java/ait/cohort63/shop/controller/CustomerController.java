@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("customers")// Указывает, что контроллер обрабатывает запросы, связанные с ресурсом products
+@RequestMapping("/customers")// Указывает, что контроллер обрабатывает запросы, связанные с ресурсом products
 public class CustomerController {
 
     private final CustomerService customerService;
