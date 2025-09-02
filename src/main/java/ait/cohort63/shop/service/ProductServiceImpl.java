@@ -1,59 +1,86 @@
 package ait.cohort63.shop.service;
 
 
+import ait.cohort63.shop.model.dto.ProductDTO;
 import ait.cohort63.shop.model.entity.Product;
+import ait.cohort63.shop.repository.ProductRepository;
 import ait.cohort63.shop.service.interfaces.ProductService;
+import ait.cohort63.shop.service.mapping.ProductMappingService;
 import org.springframework.stereotype.Service;
-
 import java.math.BigDecimal;
 import java.util.List;
 
 
 @Service
 public class ProductServiceImpl implements ProductService {
+    private final ProductRepository productRepository;
+    private final ProductMappingService mapper;
+
+    public ProductServiceImpl(ProductRepository productRepository, ProductMappingService mapper) {
+        this.productRepository = productRepository;
+        this.mapper = mapper;
+    }
 
     @Override
-    public Product saveProduct(Product product) {
+    public ProductDTO saveProduct(ProductDTO  productDTO ) {
+        Product product = mapper.mapDTOToEntity(productDTO);
+        product.setActive(true);
+        return mapper.mapEntityToDTO(productRepository.save(product));
+    }
+
+    @Override
+    public List<ProductDTO> getAllActiveProducts() {
+
+        return productRepository.findAll()
+                .stream()
+                .filter(Product::isActive)
+                .map(mapper::mapEntityToDTO)
+                .toList();
+    }
+
+    @Override
+    public ProductDTO  getProductById(Long id) {
+
+        Product product = productRepository.findById(id).orElse(null);
+        if (product == null || !product.isActive()){
+            return null;
+        }
+        return mapper.mapEntityToDTO(product) ;
+    }
+
+    @Override
+    public ProductDTO  updateProduct(Long id, ProductDTO  productDTO ) {
+
         return null;
     }
 
     @Override
-    public List<Product> getAllActiveProducts() {
-        return List.of();
-    }
+    public ProductDTO  deleteProductById(Long id) {
 
-    @Override
-    public Product getProductById(Long id) {
         return null;
     }
 
     @Override
-    public Product updateProduct(Long id, Product product) {
+    public ProductDTO  deleteProductByTitle(String title) {
+
         return null;
     }
 
     @Override
-    public Product deleteProductById(Long id) {
-        return null;
-    }
+    public ProductDTO  restoreProductById(Long id) {
 
-    @Override
-    public Product deleteProductByTitle(String title) {
-        return null;
-    }
-
-    @Override
-    public Product restoreProductById(Long id) {
         return null;
     }
 
     @Override
     public long getProductCount() {
+
         return 0;
     }
 
     @Override
     public BigDecimal getTotalPrice() {
+
         return null;
     }
 

@@ -4,15 +4,13 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
-    <changeSet id="create-table-cart" author="AndreiGulii">
-        <createTable tableName="cart">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="customer_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-
-        </createTable>
+    <changeSet id="create-foreignkey-cart-to-customer.xml" author="AndreiGulii">
+        <addForeignKeyConstraint
+                baseTableName="cart"
+                baseColumnNames="customer_id"
+                constraintName="fk_cart_to_customer"
+                referencedTableName="customer"
+                referencedColumnNames="id"
+                />
     </changeSet>
 </databaseChangeLog>

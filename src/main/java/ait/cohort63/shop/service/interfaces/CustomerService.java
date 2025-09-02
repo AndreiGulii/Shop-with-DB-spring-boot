@@ -1,23 +1,23 @@
 package ait.cohort63.shop.service.interfaces;
 
-import ait.cohort63.shop.model.entity.Customer;
+import ait.cohort63.shop.model.dto.CustomerDTO;
 import java.util.List;
 
 public interface CustomerService {
 
-    Customer saveCustomer(Customer customer);
+    CustomerDTO saveCustomer(CustomerDTO customerDTO);
 
-    List<Customer> getAllActiveCustomers();
+    List<CustomerDTO> getAllActiveCustomers();
 
-    Customer getCustomerById(Long id);
+    CustomerDTO getCustomerById(Long id);
 
-    Customer updateCustomer(Long id, Customer customer);
+    CustomerDTO updateCustomer(Long id, CustomerDTO customerDTO);
 
-    Customer deleteCustomerById(Long id);
+    CustomerDTO deleteCustomerById(Long id);
 
-    Customer deleteCustomerByName(String title);
+    CustomerDTO deleteCustomerByName(String title);
 
-    Customer restoreCustomerById(Long id);
+    CustomerDTO restoreCustomerById(Long id);
 
     long getCustomerCount();
 

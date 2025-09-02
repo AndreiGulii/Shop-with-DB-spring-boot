@@ -1,11 +1,24 @@
 package ait.cohort63.shop.model.entity;
-
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import java.util.Objects;
 
+@Entity
+@Table(name="customer")
 public class Customer {
+    @Schema(description = "customer unique identifier", example = "8888", accessMode =  Schema.AccessMode.READ_ONLY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column
     private Long id;
-    private String Name;
-    private boolean Active;
+
+    @Schema(description = "Customer name", example = "Petrovich")
+    @Column
+    private String name;
+
+    @Schema(description = "Customer active or not", example = "active", accessMode =  Schema.AccessMode.READ_ONLY )
+    @Column
+    private boolean active;
 
     public Customer() {
     }
@@ -15,11 +28,11 @@ public class Customer {
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public void setActive(boolean active) {
-        Active = active;
+        this.active = active;
     }
 
     public Long getId() {
@@ -27,30 +40,28 @@ public class Customer {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public boolean isActive() {
-        return Active;
+        return active;
     }
 
     @Override
     public String toString() {
-        return String.format("Customer: id - %d, name - %s, active - %s" ,  id, Name, Active ? "Yes" : "No");
+        return String.format("Customer: id - %d, name - %s, active - %s" ,  id, name, active ? "Yes" : "No");
     }
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Customer customer = (Customer) o;
-        return Active == customer.Active && Objects.equals(id, customer.id) && Objects.equals(Name, customer.Name);
+    public final boolean equals(Object o) {
+        if (!(o  instanceof Customer customer)) return false;
+        return active == customer.active && Objects.equals(id, customer.id) && Objects.equals(name, customer.name);
     }
 
     @Override
     public int hashCode() {
         int result = Objects.hashCode(id);
-        result = 31 * result + Objects.hashCode(Name);
-        result = 31 * result + Boolean.hashCode(Active);
+        result = 31 * result + Objects.hashCode(name);
+        result = 31 * result + Boolean.hashCode(active);
         return result;
     }
 }

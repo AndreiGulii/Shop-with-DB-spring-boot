@@ -1,18 +1,30 @@
 package ait.cohort63.shop.model.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-/**
- * @author Sergey Bugaenko
- * {@code @date} 29.08.2025
- */
 
+
+@Entity
+@Table(name="product")
+@Schema(description = "Class that described Product")
 public class Product {
 
+    @Schema(description = "product unique identifier", example = "7777", accessMode =  Schema.AccessMode.READ_ONLY)
+    @Id // govorim baze chto primary key eto u nas id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)//govorim chto id generiruietsa bazoi dannih
+    @Column(name = "id")
     private Long id;
+    @Schema(description = "Product title", example = "Banana")
+    @Column(name = "title")
     private String title;
+    @Schema(description = "Product price", example = "8.50")
+    @Column(name = "price")
     private BigDecimal price;
+    @Schema(description = "Product active or not", example = "active", accessMode =  Schema.AccessMode.READ_ONLY)
+    @Column //Esli imea polea sovpadaiet s nazvaniem kolonki v BD to mojno ne pisati name="active"
     private boolean active;
 
     @Override
