@@ -13,6 +13,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 
+// polucheniie vseh produktov- dostupno vsem polizovateleam, vkliuchaia anonimnih
+// polucheniie produkta po id - toliko authentifizirovannie polizovateli
+// sohranenije produkta v BD - toliko admini
+
 @RestController
 @RequestMapping("/products") // Указывает, что контроллер обрабатывает запросы, связанные с ресурсом products
 @Tag(name = "Product controller", description = "Controller for operations with products")

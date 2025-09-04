@@ -23,9 +23,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO saveProduct(ProductDTO  productDTO ) {
-        Product product = mapper.mapDTOToEntity(productDTO);
+        Product product = mapper.mapDTOToProduct(productDTO);
         product.setActive(true);
-        return mapper.mapEntityToDTO(productRepository.save(product));
+        return mapper.mapProductToDTO(productRepository.save(product));
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findAll()
                 .stream()
                 .filter(Product::isActive)
-                .map(mapper::mapEntityToDTO)
+                .map(mapper::mapProductToDTO)
                 .toList();
     }
 
@@ -45,7 +45,7 @@ public class ProductServiceImpl implements ProductService {
         if (product == null || !product.isActive()){
             return null;
         }
-        return mapper.mapEntityToDTO(product) ;
+        return mapper.mapProductToDTO(product) ;
     }
 
     @Override

@@ -64,4 +64,8 @@ public class Customer {
         result = 31 * result + Boolean.hashCode(active);
         return result;
     }
+
+    public void setCart(Cart cart) {
+
+    }
 }

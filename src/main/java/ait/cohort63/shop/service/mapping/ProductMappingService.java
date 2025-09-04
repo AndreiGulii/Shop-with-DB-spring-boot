@@ -9,9 +9,9 @@ import org.mapstruct.Mapping;
 public interface ProductMappingService {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "active", constant = "true")
-    Product mapDTOToEntity(ProductDTO productDTO);
+    Product mapDTOToProduct(ProductDTO productDTO);
 
-    ProductDTO mapEntityToDTO(Product product);
+    ProductDTO mapProductToDTO(Product product);
 
 //    public Product mapDTOToEntity(ProductDTO productDTO) {
 //        Product product = new Product();
