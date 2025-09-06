@@ -10,12 +10,12 @@ public class RefreshRequestDTO {
         return "Refresh request -> refresh token: " + refreshToken;
     }
 
-    public String getRefresfToken() {
+    public String getRefreshToken() {
         return refreshToken;
     }
 
-    public void setRefresfToken(String refresfToken) {
-        this.refreshToken = refresfToken;
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
     @Override

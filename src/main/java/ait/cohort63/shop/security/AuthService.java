@@ -47,7 +47,7 @@ public class AuthService {
 
     public TokenResponseDTO refreshAccessToken(RefreshRequestDTO refreshRequestDTO) throws AuthException {
 
-        String refreshToken = refreshRequestDTO.getRefresfToken();
+        String refreshToken = refreshRequestDTO.getRefreshToken();
 
         //Provereaiem Token na validnosti
         boolean isValid = tokenService.validateRefreshToken(refreshToken);
