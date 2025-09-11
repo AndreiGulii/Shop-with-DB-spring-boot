@@ -1,4 +1,6 @@
 package ait.cohort63.shop.controller;
+import ait.cohort63.shop.exeption_handling.Response;
+import ait.cohort63.shop.exeption_handling.exceptions.FirstTestException;
 import ait.cohort63.shop.model.dto.ProductDTO;
 import ait.cohort63.shop.service.interfaces.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,6 +10,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,7 +42,8 @@ public class ProductController {
 
 
     @PostMapping
-    public ProductDTO saveProduct(@Parameter(description = "Created product object") @RequestBody ProductDTO productDTO) {
+    public ProductDTO saveProduct(@Parameter(description = "Created product object")
+                                      @Valid @RequestBody ProductDTO productDTO) {
         // обращаемся к сервису для сохранения продукта
         return productService.saveProduct(productDTO);
 
@@ -59,7 +65,13 @@ public class ProductController {
             @ApiResponse(responseCode = "404", description = "Product not found", content = @Content)})
 
     @GetMapping("/{id}")
-    public ProductDTO  getById(@Parameter(description = "The id needs to be fetched", required = true) @PathVariable Long id) {
+    public ProductDTO  getById(
+            @Parameter(description = "The id needs to be fetched", required = true)
+            @PathVariable Long id) {
+        //Proveriajem esli id== 10 vibrasivaiem iscliuchenije ( etogo biti v kontrollere ne doljno)
+//        if (id==10){
+//            throw new FirstTestException("ID cannot be 10");
+//        }
         // обращаемся к сервису и запрашиваем продукт по id
         return productService.getProductById(id);
     }
@@ -79,13 +91,14 @@ public class ProductController {
 
     // DELETE -> /products/12
     @DeleteMapping("/{productId}")
-    public ProductDTO remove(@PathVariable("productId") Long id) {
+    public ProductDTO remove(
+            @PathVariable("productId") Long id) {
         // обращаемся к сервису для удаления
         return productService.deleteProductById(id);
     }
 
-    @DeleteMapping("/by-title")
-    public ProductDTO removeByTitle(@RequestParam String title) {
+    @DeleteMapping("/by-title/{title}")
+    public ProductDTO removeByTitle(@PathVariable("title") String title) {
         return productService.deleteProductByTitle(title);
     }
 
@@ -107,6 +120,12 @@ public class ProductController {
     @GetMapping("/average-price")
     public BigDecimal getAveragePrice() {
         return productService.getAveragePrice();
+    }
+
+    @ExceptionHandler(FirstTestException.class)
+    public ResponseEntity<Response> handleException(FirstTestException ex) {
+        Response response = new Response(ex.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 }

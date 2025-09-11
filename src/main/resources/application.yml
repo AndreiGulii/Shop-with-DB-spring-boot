@@ -15,9 +15,33 @@ spring:
     properties:
       hibernate:
         auto_quote_keyword: true
+
+  mail:
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD} # paroli dlea prilojenii iz google accounta
+    host: smtp.gmail.com # adres servera u google
+    port: 587 # port dlea otpravki pochti u google cheres smtp
+    properties:
+      mail:
+        smtp:
+          auth: true # vkliuchaiem authentifikatsiiu dlea smtp zaprosov
+          starttls:
+            enable: true # vkliuchaiem zashifrovanoie soedinenije
+          ssl:
+            protocols: TLSv1.2 # Ukazivaiem protokol zashiti
+            trust: smtp.gmail.com # dobavleaiem smtp server v doveriie
+          debug: true # vkliuchaem kogirovanie protsesa otpravki pochti
+
+
 server:
   servlet:
     context-path: /api
+#  port: 8080 #mojno pomeniati na drugoi port
 key:
   access: ${KEY_ACCESS}
   refresh: ${KEY_REFRESH}
+logging:
+  file:
+    name: logs/log.log
+  level:
+    root: info

@@ -1,36 +1,39 @@
 package ait.cohort63.shop.model.entity;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Table(name = "cart")
 public class Cart {
 
-    @Schema(description = "cart unique identifier", example = "555", accessMode = Schema.AccessMode.READ_ONLY)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
+    @Column(name = "id")
     private Long id;
 
-    @Schema(description = "Customer that owns this cart")
     @OneToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "customer_id")
+    private Customer  customer;
 
-    @Schema(description = "List of products in the cart")
     @ManyToMany
     @JoinTable(
-            name = "cart_products",
+            name = "cart_product",
             joinColumns = @JoinColumn(name = "cart_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private List<Product> products =new java.util.ArrayList<>();
+    private List<Product> products;
 
-    public Cart() {
+    @Override
+    public String toString() {
+        return String.format("Cart: id - %d, products count: %d",
+                id, products == null ? 0 : products.size());
     }
 
     public Long getId() {
@@ -41,11 +44,11 @@ public class Cart {
         this.id = id;
     }
 
-    public Customer getCustomer() {
+    public Customer  getCustomer() {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(Customer  customer) {
         this.customer = customer;
     }
 
@@ -58,27 +61,65 @@ public class Cart {
     }
 
     @Override
-    public String toString() {
-        return String.format(
-                "Cart: id - %d, customerId - %d, products count - %d",
-                id,
-                customer != null ? customer.getId() : null,
-                products != null ? products.size() : 0
-        );
-    }
+    public final boolean equals(Object o) {
+        if (!(o instanceof Cart cart)) return false;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cart cart = (Cart) o;
-        return Objects.equals(id, cart.id)
-                && Objects.equals(customer, cart.customer)
-                && Objects.equals(products, cart.products);
+        return Objects.equals(id, cart.id) && Objects.equals(customer, cart.customer);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, customer, products);
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(customer);
+        return result;
+    }
+
+//    Функционал корзины
+
+    public void addProduct(Product product) {
+        if (product.isActive()) products.add(product);
+    }
+
+    public List<Product> getAllActiveProducts() {
+        return products.stream()
+                .filter(Product::isActive)
+                .toList();
+    }
+
+    public Product removeById(Long id) {
+        Optional<Product> optionalProduct = products.stream()
+                .filter(p -> p.getId().equals(id))
+                .findFirst();
+
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            products.remove(product);
+            return product;
+        }
+
+        return null;
+    }
+
+    public void clear() {
+        products.clear();
+    }
+
+    public BigDecimal getTotalPrice() {
+        if (products == null || products.isEmpty()) return BigDecimal.ZERO;
+
+        return products.stream()
+                .filter(Product::isActive)
+                .map(Product::getPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public BigDecimal getAveragePrice() {
+
+        long countActive = products.stream()
+                .filter(Product::isActive)
+                .count();
+        if (countActive == 0) return BigDecimal.ZERO;
+
+        return getTotalPrice().divide(new BigDecimal(countActive), RoundingMode.HALF_UP);
     }
 }

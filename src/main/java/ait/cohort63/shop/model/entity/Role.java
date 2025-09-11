@@ -2,7 +2,6 @@ package ait.cohort63.shop.model.entity;
 
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-
 import java.util.Objects;
 
 @Entity

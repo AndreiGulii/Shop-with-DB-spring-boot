@@ -1,17 +1,12 @@
 package ait.cohort63.shop.model.entity;
 
-import ait.cohort63.shop.model.entity.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
 
 @Entity
 @Table(name = "user")
@@ -27,6 +22,12 @@ public class User implements UserDetails {
     @Column
     private String password;
 
+    @Column(name = "email", nullable = false, length = 64)
+    private String email;
+
+    @Column(name = "active",  nullable = false)
+    private boolean active;
+
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -38,24 +39,24 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return String.format("User: id - %d, username - %s,  roles - %s",
-                id, username, roles == null ? "[]" : roles);
+        return String.format("User: id - %d, username - %s,  roles - %s, active -%s",
+                id, username, roles == null ? "[]" : roles, active);
     }
 
-    @Override
-    public final boolean equals(Object o) {
-        if (!(o instanceof User user)) return false;
-
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(roles, user.roles);
+    public String getEmail() {
+        return email;
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(id);
-        result = 31 * result + Objects.hashCode(username);
-        result = 31 * result + Objects.hashCode(password);
-        result = 31 * result + Objects.hashCode(roles);
-        return result;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public Long getId() {
@@ -72,6 +73,25 @@ public class User implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+        return active == user.active && Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(password, user.password) && Objects.equals(email, user.email) && Objects.equals(roles, user.roles);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(username);
+        result = 31 * result + Objects.hashCode(password);
+        result = 31 * result + Objects.hashCode(email);
+        result = 31 * result + Boolean.hashCode(active);
+        result = 31 * result + Objects.hashCode(roles);
+        return result;
     }
 
     @Override

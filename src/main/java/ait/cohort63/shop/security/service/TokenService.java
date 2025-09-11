@@ -1,20 +1,16 @@
 package ait.cohort63.shop.security.service;
 
 import ait.cohort63.shop.model.entity.Role;
-import ait.cohort63.shop.model.entity.User;
 import ait.cohort63.shop.repository.RoleRepository;
 import ait.cohort63.shop.security.AuthInfo;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.web.client.RestTemplateBuilderConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import javax.crypto.SecretKey;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -45,7 +41,7 @@ public class TokenService {
 
         //Zadiom vremea dejstvija tokena
         Instant now = Instant.now();
-        Instant expiration = now.plus(120, ChronoUnit.SECONDS);
+        Instant expiration = now.plus(120, ChronoUnit.MINUTES);
         //
         Date expirationDate = Date.from(expiration);
         return Jwts.builder()

@@ -5,8 +5,6 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-
-
 @Entity
 @Table(name="product")
 @Schema(description = "Class that described Product")
@@ -17,12 +15,15 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)//govorim chto id generiruietsa bazoi dannih
     @Column(name = "id")
     private Long id;
+
     @Schema(description = "Product title", example = "Banana")
     @Column(name = "title")
     private String title;
+
     @Schema(description = "Product price", example = "8.50")
     @Column(name = "price")
     private BigDecimal price;
+
     @Schema(description = "Product active or not", example = "active", accessMode =  Schema.AccessMode.READ_ONLY)
     @Column //Esli imea polea sovpadaiet s nazvaniem kolonki v BD to mojno ne pisati name="active"
     private boolean active;
