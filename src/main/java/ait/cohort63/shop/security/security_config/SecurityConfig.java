@@ -35,13 +35,14 @@ public class SecurityConfig {
                 // Vstraivaiem nash filtr tokenFilter pered UsernamePasswordAuthenticationFilter
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // vremenno otckliuchili Security, chtob vkliuchiti komentiruem etu stroku i razkommentiruiem nije
+                      //  .anyRequest().permitAll() // vremenno otckliuchili Security, chtob vkliuchiti komentiruem etu stroku i razkommentiruiem nije
                         //VAJNO vse snachala pishem vse chastnije zaprosi a toliko potom obschieie zaprosi
-//                        .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/products/{id}").authenticated()
-//                        .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-//                        .anyRequest().authenticated()
+                        .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/register").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products/{id}").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
+                        .anyRequest().authenticated()
                 );
         return http.build();
     }

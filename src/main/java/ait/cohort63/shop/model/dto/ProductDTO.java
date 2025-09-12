@@ -23,14 +23,24 @@ public class ProductDTO {
     @Schema(description = "Product price", example = "8.50")
     private BigDecimal price;
 
+    private String image;
+
     @Override
     public String toString() {
-        return String.format("Product: id - %d, title - %s, price - %s",
-                id, title, price);
+        return String.format("Product: id - %d, title - %s, price - %s, image -%s",
+                id, title, price,  image);
     }
 
 
     public ProductDTO() {
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setId(Long id) {

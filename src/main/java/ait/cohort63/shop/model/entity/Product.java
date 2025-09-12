@@ -28,17 +28,31 @@ public class Product {
     @Column //Esli imea polea sovpadaiet s nazvaniem kolonki v BD to mojno ne pisati name="active"
     private boolean active;
 
+    @Column(name = "image")
+    private String image;
+
     @Override
     public String toString() {
-        return String.format("Product: id - %d, title - %s, price - %s, active - %s",
-                id, title, price, active ? "yes" : "no");
+        return String.format("Product: id - %d, title - %s, image_url - %s, price - %s, active - %s",
+                id, title, image, price, active ? "yes" : "no");
     }
 
     @Override
-    public final boolean equals(Object o) {
-        if (!(o instanceof Product product)) return false;
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
 
-        return active == product.active && Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price);
+        Product product = (Product) o;
+        return active == product.active && Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price) && Objects.equals(image, product.image);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(id);
+        result = 31 * result + Objects.hashCode(title);
+        result = 31 * result + Objects.hashCode(price);
+        result = 31 * result + Boolean.hashCode(active);
+        result = 31 * result + Objects.hashCode(image);
+        return result;
     }
 
     public Product() {
@@ -76,12 +90,13 @@ public class Product {
         return active;
     }
 
-    @Override
-    public int hashCode() {
-        int result = Objects.hashCode(id);
-        result = 31 * result + Objects.hashCode(title);
-        result = 31 * result + Objects.hashCode(price);
-        result = 31 * result + Boolean.hashCode(active);
-        return result;
+
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

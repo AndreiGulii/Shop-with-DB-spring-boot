@@ -9,6 +9,8 @@ import ait.cohort63.shop.service.mapping.ProductMappingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -123,5 +125,15 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public BigDecimal getAveragePrice() {
         return null;
+    }
+
+    @Transactional// izmenenija primeniatsa k Base dannih
+    @Override
+    public void attachImage(String imageUrl, String productTitle) {
+        // ishem produkt po nazvaniiu
+        Product product= productRepository.findByTitleIgnoreCase(productTitle)
+                .orElseThrow(() -> new ProductNotFoundByTitleException(productTitle));
+        //Prisvaivaiem produktu ssilku
+        product.setImage(imageUrl);
     }
 }
