@@ -38,10 +38,13 @@ public class SecurityConfig {
                       //  .anyRequest().permitAll() // vremenno otckliuchili Security, chtob vkliuchiti komentiruem etu stroku i razkommentiruiem nije
                         //VAJNO vse snachala pishem vse chastnije zaprosi a toliko potom obschieie zaprosi
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/refresh").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/files").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/confirm").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/{id}").authenticated()
                         .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
+
                         .anyRequest().authenticated()
                 );
         return http.build();

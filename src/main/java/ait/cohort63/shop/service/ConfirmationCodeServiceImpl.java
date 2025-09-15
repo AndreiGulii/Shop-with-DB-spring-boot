@@ -28,7 +28,7 @@ public class ConfirmationCodeServiceImpl implements ConfirmationCodeService {
         ConfirmationCode confirmationCode = new ConfirmationCode();
         confirmationCode.setCode(code);
         confirmationCode.setUser(user);
-        confirmationCode.setExpired(LocalDateTime.now().plusDays(1)); // ustanavlivaiem srok deistviia koda aktivatsii
+        confirmationCode.setExpired(LocalDateTime.now().plusDays(2)); // ustanavlivaiem srok deistviia koda aktivatsii
 
         repository.save(confirmationCode);//sohraniaem kod v BD
 
